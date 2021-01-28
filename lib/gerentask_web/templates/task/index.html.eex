@@ -1,0 +1,94 @@
+<%= if @count_tasks == 0 do %>
+
+<br />
+<br />
+<div class="row center">
+  <h5 class="grey-text">Não tem nenhuma tarefa cadastrada :(</h5>
+</div>
+
+<% else %>
+
+<ul class="collapsible expandable">
+  <li class="<%= @count_not_concluded > 0 && 'active' %>">
+    <div class="collapsible-header">
+      <i class="material-icons">bookmark</i>Tarefas à Fazer
+      <span data-badge-caption="tarefa(s)" class="badge"><%= @count_not_concluded %></span>
+    </div>
+    <div class="collapsible-body">
+      <%= for task <- @tasks do %>
+      <%= if task.concluded == false do %>
+      <div class="col s12 m6">
+        <div class='card <%= task.levels == "warning" && "yellow darken-3" || "red lighten-1" %>'>
+          <div class="card-content white-text">
+            <span class="card-title"><%= task.message %></span>
+          </div>
+          <div class="card-action">
+            <%= link to: Routes.task_path(@conn, :edit, task), class: "white-text" do %>
+            Editar
+            <% end %>
+            <%= link to: Routes.task_path(@conn, :delete, task), method: :delete, data: [confirm: "Tem certeza que deseja deletar ?"], class: "white-text" do %>
+            Deletar
+            <% end %>
+            <%= link to: Routes.task_path(@conn, :conclude, task), method: :conclude , class: "white-text " do %>
+            <i data-position="bottom" data-tooltip="Concluir Tarefa" id="check" class="material-icons right tooltipped">check_box_outline_blank</i>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% end %>
+      <% end %>
+    </div>
+  </li>
+  <li>
+    <div class="collapsible-header">
+      <i class="material-icons">check</i>Tarefas Concluidas
+      <span data-badge-caption="concluída(s)" class="badge"><%= @count_concluded %></span>
+    </div>
+    <div class="collapsible-body">
+      <%= for task <- @tasks do %>
+      <%= if task.concluded == true do %>
+      <div class="col s12 m6">
+        <div class='card grey darken-2'>
+          <div class="card-content white-text">
+            <span class="card-title">
+              <%= task.message %>
+            </span>
+          </div>
+          <div class="card-action">
+            <%= link to: Routes.task_path(@conn, :delete, task), method: :delete, data: [confirm: "Tem certeza que deseja deletar ?"], class: "white-text" do %>
+            Deletar
+            <% end %>
+            <%= link to: Routes.task_path(@conn, :conclude, task), method: :conclude , class: "white-text" do %>
+            <i id="check" class="material-icons right">check_box</i>
+            <% end %>
+          </div>
+        </div>
+      </div>
+      <% end %>
+      <% end %>
+    </div>
+  </li>
+</ul>
+<% end %>
+
+<script>
+  const checks = document.querySelectorAll("#check")
+
+  function handle_checked(e) {
+    e.currentTarget.innerText = "check_box"
+  }
+
+  function handle_check(e) {
+    e.currentTarget.innerText = "check_box_outline_blank"
+  }
+  checks.forEach(item => {
+    console.log()
+    if (item.innerText == "check_box_outline_blank") {
+      item.addEventListener("mouseenter", handle_checked)
+      item.addEventListener("mouseleave", handle_check)
+    } else {
+      item.addEventListener("mouseenter", handle_check)
+      item.addEventListener("mouseleave", handle_checked)
+    }
+  })
+</script>

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gerentask · Phoenix Framework</title>
+  <link rel="stylesheet" href="<%= Routes.static_path(@conn, "/css/app.css") %>" />
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <script defer type="text/javascript" src="<%= Routes.static_path(@conn, "/js/app.js") %>"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+</head>
+
+<body>
+  <nav class="nav-extended">
+    <div class="nav-wrapper">
+      <%= link to: Routes.task_path(@conn, :index), class: "brand-logo center" do%>
+      Gerentask
+      <% end %>
+    </div>
+    <div class="nav-content">
+      <%= link to: Routes.task_path(@conn, :new), class: "btn-floating btn-large halfway-fab" do %>
+      <i class="material-icons yellow darken-2">add</i>
+      <% end %>
+    </div>
+  </nav>
+  <main role="main" class="container">
+    <%= @inner_content %>
+  </main>
+  <script>
+    let info = '<%= get_flash(@conn, :info) %>'
+    let error = '<%= get_flash(@conn, :error) %>'
+
+    if (info) {
+      M.toast({
+        html: info,
+        inDuration: 200,
+        displayLength: 2000
+      })
+    }
+    if (error) {
+      M.toast({
+        html: error,
+        inDuration: 200,
+        displayLength: 2000
+      })
+    }
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<div class="row">
+  <%= form_for @changeset, @action, fn f -> %>
+  <div class="col s12">
+    <div class="row">
+      <div class="input-field col s12">
+        <%= label f, "Tarefa", for: "message" %>
+        <%= text_input f, :message, id: "message", class: "validate" %>
+        <p class="helper-text">
+          <%= error_tag f, :message %>
+        </p>
+      </div>
+    </div>
+    <div class="row">
+      <div class="input-field col s12">
+        <%= select f, :levels, ["Urgente": "urgent", "Atenção": "warning"] %>
+      </div>
+    </div>
+  </div>
+
+  <%= submit "Salvar", class: "btn btn-large waves-effect green" %>
+  <% end %>
+</div>
